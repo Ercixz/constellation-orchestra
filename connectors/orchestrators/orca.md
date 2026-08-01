@@ -38,17 +38,16 @@ Orca 的空间是**三层叠加**（详见 SKILL.md 心智模型）：
 
 ```
 Orca 侧边栏
-└── Project Group: 游戏项目（容器标签）
-    ├── Project: git 仓库（worktree 染指处）→ 里面开各种 worktree
-    │     ├── main tree ← Checker：合并 worker 成果进 main、验收
-    │     └── worktree ×N ← Worker：隔离执行（调研/建构）
-    └── Folder WS: 项目本体 / 文件类文件夹 ← Manager：只管技术规划/拆单，不进任何 worktree
+└── Project: 单一 git 仓库（单仓库默认，资产混搭）
+    ├── main tree ← Checker：合并 worker 成果进 main、验收
+    │                Manager：项目本体直改（知识笔记/文档）
+    └── worktree ×N ← Worker：隔离执行（代码任务 sparse-checkout / 资产任务完整）
 ```
 
-- **Project Group** = 顶层容器标签，对应整个项目文件夹。
-- **git 仓库**只在 worktree 染指处单独开 Project，里面开各种 worktree。
-- **项目本体 / 文件类文件夹** = folder workspace，**Manager 直改**，Manager 不跑任何 worktree。
-- **三库映射**（SKILL.md 第二节）：知识笔记库→Manager folder；代码构建库→git repo（worktree=Worker / main=Checker）；媒体资产库→与代码库同仓时走 Git LFS（UE 等引擎工程物理不可拆）。
+- **单仓库直接一个 Project**，不需要 Project Group（Group 仅多仓库时当容器）。
+- **git 仓库**是唯一 worktree 染指处，worktree 在里面开。
+- **Manager 不跑任何 worktree**——只碰项目本体（知识笔记/文档 folder 直改）。
+- **大文件**：LFS 对象共享、worktree 工作副本各一份 → 代码 Worker 用 sparse-checkout 不拉资产（详见 SKILL.md 第二节）。
 - **Checker 在 main tree 上合并**：Worker 提交回 main → Checker 复核 live 状态 → 合并/验收。
 - 实例：`.agents/TEAM-PROTOCOL.md`（Project Deterritorialization 落地）→ 分层约定见其第 4 节。
 

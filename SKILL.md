@@ -76,10 +76,14 @@ MyGame/
 
 ### 角色-位置映射（与第三节一致）
 
-- **Manager** → 只碰知识笔记库（docs/ folder），**不进任何 worktree**。
+- **Manager** → 只碰知识笔记库 / 项目本体（folder 直改），**不进任何 worktree**。
 - **Worker** → 代码构建库的 **worktree**。
 - **Checker** → 代码构建库的 **main tree**。
-- 侧边栏用 **Project Group** 把三库组织成一个容器标签。
+
+### 单仓库 vs 多仓库的容器选择
+
+- **单仓库（推荐默认）**：一个 git 仓库承载全部（代码+资产+文档混搭），**直接一个 Project，不需要 Project Group**。worktree 不复制大文件（见下方 LFS 小节），资产混搭无碍。
+- **多仓库**（如：代码库 / 知识库 / 资产库独立成仓）：才用 **Project Group** 把各仓库组织成一个容器标签。
 
 ### ⚠️ 引擎硬约束（UE 等引擎的例外）
 
@@ -87,6 +91,25 @@ MyGame/
 - 媒体资产库（Content/）**必须与代码库同仓**，用 **Git LFS** 把 `.uasset`/`.umap`/FBX 等大文件替换成指针入库，仓库不膨胀（`.gitattributes` 配 LFS 规则）。
 - 与代码库同仓的资产，**不**单独建 folder workspace；纯素材（reference/、SourceArt/ 导出物等）可留在根目录 folder 给 Manager 管。
 - 判断：引擎工程（`.uproject`/`Source/`/`Content/`）**物理不可拆** → 同仓 + LFS；纯内容项目（文档/音频/图片，无引擎耦合）→ 可独立成库。
+
+### 🗂️ 大文件 vs worktree（LFS + sparse-checkout + Lock）
+
+git worktree 机制：**LFS 对象在 `.git/lfs/objects/` 共享一份**，但**每个 worktree 的 checkout 工作副本各有一份**（大文件会被还原成真实文件复制到各 worktree 目录）。多 worktree 时磁盘开销 = 大文件 × worktree 数。
+
+| 场景 | 解法 | 效果 |
+|---|---|---|
+| 纯代码 Worker（不动资产） | `git sparse-checkout set --no-cone Source Config Plugins` | worktree 只 checkout 代码，**不拉资产** |
+| 纯代码 Worker（更狠） | `GIT_LFS_SKIP_SMUDGE=1` 或 `git lfs smudge --skip` | checkout 只写 LFS 指针，0 资产开销 |
+| 资产 Worker（要改 .uasset） | 完整 checkout | 接受工作副本复制（LFS 对象仍共享） |
+
+**可再生 vs 不可再生**：版本控制只管**不可再生的源资产**（手作/导入的 .uasset、FBX、贴图、音频）。**可再生的派生产物**（DDC、Intermediate、Cooked、Saved、光照烘焙、着色器缓存、程序化生成物的实例）一律 gitignore——引擎随时能重算，存 git 只会膨胀仓库。版本控制管的是"事实来源"，不是"所有文件"。
+
+**VCS 选型结论**：git 对二进制资产"能存不能 merge"（代码可 diff/merge，二进制只能整文件替换）。但 **git + LFS Lock 已覆盖 Perforce 的核心能力**（锁机制），多 Agent 资产冲突靠**调度纪律**解决（资产任务串行 + LFS Lock 兜底），**无需迁移 VCS**。
+
+**多 Agent 协作纪律**：
+- **代码任务**：worktree 并行（sparse-checkout 只要 Source/ 等），merge 无忧。
+- **资产任务**：main tree 串行（一次一个 agent），LFS Lock 锁着防止并改。
+- **冲突在结构上不可能** = Manager 拆单时，一个资产同一时间只派一个 agent。
 
 ### 落地步骤
 
@@ -107,18 +130,16 @@ MyGame/
 
 ```
 Orca 侧边栏
-└── Project Group: 游戏项目（容器标签）
-    ├── Project: git 仓库（worktree 染指处）→ 里面开各种 worktree
-    │     ├── main tree ← Checker：合并 worker 成果进 main、验收
-    │     └── worktree ×N ← Worker：隔离执行（调研/建构）
-    └── Folder WS: 项目本体 / 文件类文件夹 ← Manager：只管技术规划/拆单，不进任何 worktree
+└── Project: 单一 git 仓库（单仓库默认，资产混搭）
+    ├── main tree ← Checker：合并 worker 成果进 main、验收
+    │                Manager：项目本体直改（知识笔记/文档）
+    └── worktree ×N ← Worker：隔离执行（代码任务 sparse-checkout / 资产任务完整）
 ```
 
 **分层铁律**：
-- **Project Group**（顶层容器标签）= 对应整个项目文件夹，把 git 仓库和项目本体 folder 组织在一起。
-- **git 仓库**只在"worktree 染指的地方"单独开一个 Project，里面开各种 worktree。
-- **项目本体 / 文件类文件夹** = folder workspace，**交给 Manager 直改**。
-- **Manager 不跑在 worktree 里面**（main 也是 worktree）——Manager 只碰项目本体 folder。
+- **单仓库直接一个 Project**，不需要 Project Group（Group 仅多仓库时当容器）。
+- **Manager 不跑在 worktree 里面**（main 也是 worktree）——Manager 只碰项目本体（知识笔记/文档 folder 直改）。
+- **git 仓库**是唯一 worktree 染指处，worktree 在里面开。
 - **合并流程**：Worker 在 worktree 完成 → 提交回 main → **Checker 在 main tree 上合并验收** → Manager 只规划，不直接合并。
 
 ## 四、任务流转闭环（乐章的起承转合）
