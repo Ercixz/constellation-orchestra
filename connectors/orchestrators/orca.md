@@ -48,6 +48,7 @@ Orca 侧边栏
 - **Project Group** = 顶层容器标签，对应整个项目文件夹。
 - **git 仓库**只在 worktree 染指处单独开 Project，里面开各种 worktree。
 - **项目本体 / 文件类文件夹** = folder workspace，**Manager 直改**，Manager 不跑任何 worktree。
+- **三库映射**（SKILL.md 第二节）：知识笔记库→Manager folder；代码构建库→git repo（worktree=Worker / main=Checker）；媒体资产库→与代码库同仓时走 Git LFS（UE 等引擎工程物理不可拆）。
 - **Checker 在 main tree 上合并**：Worker 提交回 main → Checker 复核 live 状态 → 合并/验收。
 - 实例：`.agents/TEAM-PROTOCOL.md`（Project Deterritorialization 落地）→ 分层约定见其第 4 节。
 

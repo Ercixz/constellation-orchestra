@@ -55,19 +55,43 @@ Project（虚拟容器，无磁盘实体）
 | 并行 | ✅ 多 agent 各改各的 | ⚠️ 会互相踩 |
 | 用途 | 代码 | 资产/文档/配置 |
 
-## 二、项目组织蓝图（代码+资产+文档分层）
+## 二、项目组织蓝图（三库分离）
 
-**原则：代码用 worktree 隔离，资产/文档用 folder workspace 直改。**
+**原则：三库分离——代码构建库 / 媒体资产库 / 知识笔记库，角色各自落位。**
 
 ```
-MyGame/（磁盘普通目录）
-├── code/    → git init（本地即可，不推送）→ Orca 注册为 Repo → worktree 多 agent 并行
-├── assets/  → Orca 里 Folder WS（UI 打开）→ 单 agent 直改
-└── docs/    → Orca 里 Folder WS → 单 agent 直改
+MyGame/
+├── 知识笔记库  docs/     → folder workspace → **Manager 直改**（不进任何 worktree）
+├── 代码构建库  code/     → git repo（唯一 worktree 染指处）→ worktree=Worker，main=Checker
+└── 媒体资产库  assets/   → 与代码库同仓时走 **Git LFS**；纯素材可留根目录 folder 不强制 git
 ```
 
-- worktree **只针对代码文件夹**；资产文件夹**不被 worktree 复制**；侧边栏用 Group 分组。
-- 代码注册：`orca repo add --path <code路径>`（需已 git init）；资产/文档：只能 UI 创建 folder workspace。
+### 三库定位（为什么这样分）
+
+| 库 | 内容 | 谁碰 | 放哪 |
+|---|---|---|---|
+| **知识笔记库** | 文档/ADR/会话记录/设计 | **Manager 直改**（唯一直接写它的人） | folder workspace，不 git 也可 |
+| **代码构建库** | 源代码/工程配置 | Worker 在 worktree 执行，Checker 在 main 合并 | **唯一 git repo**，worktree 染指处 |
+| **媒体资产库** | 模型/贴图/音频等大文件 | 资产走 LFS，随代码仓；纯素材可独立 | 同仓 LFS 或独立 folder |
+
+### 角色-位置映射（与第三节一致）
+
+- **Manager** → 只碰知识笔记库（docs/ folder），**不进任何 worktree**。
+- **Worker** → 代码构建库的 **worktree**。
+- **Checker** → 代码构建库的 **main tree**。
+- 侧边栏用 **Project Group** 把三库组织成一个容器标签。
+
+### ⚠️ 引擎硬约束（UE 等引擎的例外）
+
+**Unreal 要求 `.uproject` 的 `Source/`、`Content/`、`Config/` 物理同级**（引擎按相对路径找 Content）——**Content 不能从工程拆出去独立成库**。此时：
+- 媒体资产库（Content/）**必须与代码库同仓**，用 **Git LFS** 把 `.uasset`/`.umap`/FBX 等大文件替换成指针入库，仓库不膨胀（`.gitattributes` 配 LFS 规则）。
+- 与代码库同仓的资产，**不**单独建 folder workspace；纯素材（reference/、SourceArt/ 导出物等）可留在根目录 folder 给 Manager 管。
+- 判断：引擎工程（`.uproject`/`Source/`/`Content/`）**物理不可拆** → 同仓 + LFS；纯内容项目（文档/音频/图片，无引擎耦合）→ 可独立成库。
+
+### 落地步骤
+
+- 代码注册：`orca repo add --path <code路径>`（需已 git init）。
+- 资产/文档：只能 UI 创建 folder workspace（CLI 无命令）。
 - folder → git 转换：git init 后**重新注册**（删旧添新，10 秒），会丢 folder 会话记录。
 
 ## 三、团队角色（星座的星位）
