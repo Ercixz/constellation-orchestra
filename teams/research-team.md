@@ -29,6 +29,16 @@ Manager（技术中枢）
 | **Manager** | 技术中枢：拆解工单、派发、汇总各研究员产出、形成结论 | **不对用户**：不直接与人类对话，只与秘书/研究员协作 |
 | **研究员（Researcher）** | 按工单收集信息，产出**结构化回执** | **不越界**：只回答自己工单的问题，不扩大范围/不自作主张 |
 
+## 各角色技能路由（配什么技能）
+
+> 技能说明 → `skill-routes/` 对应文件；**Agent 自己去 skill-routes/ 自取**，不强制全文加载。
+
+| 角色 | 配什么技能 | 用法见 |
+|---|---|---|
+| 秘书 | grilling / grill-me（澄清需求）、handoff（交接）、ask-matt（路由） | `skill-routes/grilling.md`、`skill-routes/grill-me.md`、`skill-routes/handoff.md`、`skill-routes/ask-matt.md` |
+| Manager | to-tickets（拆工单）、grill-with-docs（追问留档）、domain-modeling（共享语言）、wayfinder（大型规划） | `skill-routes/to-tickets.md`、`skill-routes/grill-with-docs.md`、`skill-routes/domain-modeling.md` |
+| 研究员 | **research**（核心查证）、domain-modeling（共享术语）、handoff（回执传递） | `skill-routes/research.md`、`skill-routes/domain-modeling.md`、`skill-routes/handoff.md` |
+
 ## 消息流闭环
 
 ```
@@ -81,4 +91,4 @@ Manager → 秘书：汇总 + 结论
 
 ---
 
-相关文件：`teams/README.md`（向导入口）、`philosophy.md`（团队三角色/编排重量分级）、`management.md`（系统架构）、`protocol-cmux.md`（派单协议）。
+相关文件：`teams/README.md`（向导入口）、`skill-routes/`（技能路由）、`philosophy.md`（团队三角色/编排重量分级）、`management.md`（系统架构）、`protocol-cmux.md`（派单协议）。

@@ -17,7 +17,7 @@
 
 ## 这是什么
 
-一个 opencode skill（也可用于 Claude Code / 其他支持 SKILL.md 的 agent），把"编排哲学 + 工具接入方法"沉淀为一份总纲 + 一份哲学 + Connector 两层结构 + 一份派单协议。
+一个 opencode skill（也可用于 Claude Code / 其他支持 SKILL.md 的 agent），把"编排哲学 + 工具接入方法 + 团队技能路由"沉淀为一份总纲 + 一份哲学 + 一份管理 + 团队向导 + 技能路由 + Connector 两层结构 + 一份派单协议。
 
 | 文件 | 内容 |
 |---|---|
@@ -26,6 +26,8 @@
 | `management.md` | 【管理】系统架构：GitHub 任务平台（四层架构 / 任务闭环 / 组件职责 / 跨项目 / 决策链） |
 | `teams/README.md` | 团队搭建向导入口（交互 5 步 / 角色-模型推荐表 / 拉起命令模板） |
 | `teams/research-team.md` | 研究团队模板（结构 / 角色职责 / 消息流 / 工单格式 / 拉起） |
+| `skill-routes/README.md` | 技能路由索引（8 技能总表：research/grilling/grill-me/domain-modeling/handoff/to-tickets/grill-with-docs/ask-matt） |
+| `skill-routes/<技能>.md` | 各技能浓缩版（定位 / 关键纪律 / 原文链接，30-60 行） |
 | `connectors/orchestrators/orca.md` | Orca 档案（四问 + 命令速查） |
 | `connectors/orchestrators/cmux.md` | CMUX 档案（四问 + 命令速查） |
 | `connectors/orchestrators/paseo.md` | Paseo 档案（四问 + 命令速查） |

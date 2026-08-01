@@ -62,6 +62,16 @@ Manager  Orca       opencode   deepseek-v4-pro     worktree create --agent openc
 研究员×N CMUX       opencode   deepseek-v4-flash   new-surface --provider opencode ×N
 ```
 
+## 角色 → 技能映射（去 skill-routes/ 自取）
+
+| 角色 | 配什么技能 | 用法 |
+|---|---|---|
+| 秘书 | grilling / grill-me（澄清需求）+ handoff（交接给团队）+ ask-matt（路由） | 见 `skill-routes/` 对应文件 |
+| Manager | to-tickets（拆工单）+ grill-with-docs（追问留档）+ domain-modeling（共享语言）+ wayfinder（大型规划） | 见 `skill-routes/` 对应文件 |
+| 研究员 | **research**（核心，查证）+ domain-modeling（共享术语）+ handoff（回执传递） | 见 `skill-routes/` 对应文件 |
+
+> 📂 **去 skill-routes/ 找技能**：Agent 被派给某角色后，先读 `skill-routes/README.md` 技能总表定位自己的技能集，需要细节再打开对应 `<技能>.md` 浓缩文件——不强制全文加载，需要时自取。
+
 ---
 
-相关文件：`teams/research-team.md`（研究团队模板）、`philosophy.md`（编排重量分级）、`management.md`（系统架构）、`connectors/agents/`（Agent 接入）、`connectors/orchestrators/`（编排器接入）。
+相关文件：`teams/research-team.md`（研究团队模板）、`skill-routes/`（技能路由）、`philosophy.md`（编排重量分级）、`management.md`（系统架构）、`connectors/agents/`（Agent 接入）、`connectors/orchestrators/`（编排器接入）。
