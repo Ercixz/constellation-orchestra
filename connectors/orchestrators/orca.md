@@ -15,7 +15,7 @@
 
 ### 2. 如何沟通、协作、连接到一起
 
-- 编排闭环：`orchestration run-create` → `task-create` → `dispatch` → `worker-start` → `gate-create`（决策门）→ `gate-resolve` → `worker-read` 验收。
+- 编排闭环：`orchestration run-create` → `task-create` → `dispatch` → `worker-start` → `gate-create`（决策门）→ `gate-resolve` → `worker-read` 验收（全命令语义见下方"任务系统（orchestration）语义详解"）。
 - 消息：`orchestration send` / `check` / `ask`（阻塞问协调者）/ `reply` / `inbox`。
 - 拉起 agent：`worktree create --name <n> --repo R --agent <id> --prompt "<任务>"`；或 `terminal create --worktree active --command "codex|claude|opencode"`。
 - 与外部协作：worktree 内 terminal 可被 CMUX 面板承载；agent 干完可通过 `paseo send` 回传给 Paseo 主管（见 `connectors/agents/README.md`）。
@@ -65,6 +65,71 @@ Orca 的空间是**三层叠加**（详见 SKILL.md 心智模型）：
 - `send|check|ask|reply|inbox`；`gate-create|gate-resolve|gate-list`
 - `worker-start|worker-show|worker-read|worker-stop|worker-abandon`
 - `coordinator-start|coordinator-stop`（legacy）；`reset`
+
+## 任务系统（orchestration）语义详解
+
+> 实测结论：Orca 的"任务"= **agent 会话**；"协作" = 会话间的文件/消息联动。本地编排**没有独立任务看板 GUI**，靠 Agent Dashboard + Agents Feed 间接呈现。外部 issue（GitHub/Jira/Linear/GitLab）只是**任务来源**，不是本地编排任务。
+
+### 命令族语义（按生命周期排序）
+
+| 命令 | 语义 | 关键参数 |
+|---|---|---|
+| `run-create` | 创建 Run = **命名空间 + 收件箱（inbox）**。本身**不调度、不放置 worker** | `--objective` |
+| `run-use` / `run-current` / `run-list` / `run-show` | 选/查当前 Run | — |
+| `task-create` | 建任务，有 ID/依赖/父子 | `--spec`、`--task-title`、`--deps`、`--parent`、`--run` |
+| `task-list` / `task-update` | 查/改任务 | — |
+| `dispatch` | 派发给**终端**执行 | `--task <id>`、`--to <terminal>` |
+| `dispatch-show` | 查看派发状态 | — |
+| `worker-start` | 拉起**受监督 worker** | `--task <id>`、`--agent <agent>`、`--worktree current\|new-child` |
+| `worker-show` / `worker-read` | 看 worker 状态 / 读产出 | — |
+| `worker-stop` / `worker-abandon` | 停 / 弃 worker | — |
+| `send` | 发消息 | — |
+| `ask` | **阻塞**问协调者 | — |
+| `reply` / `inbox` | 回复 / 收件箱 | — |
+| `gate-create` | 建决策门：任务**阻塞**直到人类/主管决策 | `--task <id>`、`--question`、`--options` |
+| `gate-resolve` / `gate-list` | 解门 / 列门 | — |
+
+### Run vs Task vs Worker 的关系
+
+```
+Run（命名空间 + 收件箱，run-create --objective）
+└── Task（ID/依赖/父子，task-create）
+    ├── 派发给终端：dispatch --task <id> --to <terminal>
+    └── 受监督 worker：worker-start --task <id> --agent <agent> [--worktree current|new-child]
+    └── 决策门：gate-create --task <id> --question --options → gate-resolve（阻塞等决策）
+```
+
+### GUI 呈现三入口
+
+| 入口 | 位置 | 看什么 | 操作 |
+|---|---|---|---|
+| **Agent Dashboard** | Settings → Experimental → Agent Dashboard（已启用 in-window + showIdle） | 看板列 Needs You / Working / Done / Idle，卡片 = agent 会话状态 | 点击卡片跳转对应终端 |
+| **Agents Feed** | 侧边栏 Agents 入口 | 线程式活动流（完成/阻塞/回复预览） | `Cmd+F` 过滤 |
+| **Worktree 卡片** | worktree 视图 | 行内 agent 状态点：🟡 工作 / 🟢 完成 / 🔴 阻塞 / ⚪ 空闲 | 观察状态点即知会话进展 |
+
+**澄清**：**任务来源选择器（GitHub/Jira/Linear/GitLab）= 外部 issue 提供商**，是"从外部拉任务进来"的入口，**不是**本地编排任务；本地编排任务的呈现靠 Dashboard + Feed + worktree 卡片间接完成。
+
+### 协作演示复现（已跑通）
+
+3 个 worktree 各配 1 个 opencode agent，靠任务间依赖协作（alpha 产 features.md → beta 产 risks.md → gamma 读两者产 roadmap.md）：
+
+```bash
+# 1. 建 3 个 worktree
+orca worktree create --repo <R> --name task-alpha
+orca worktree create --repo <R> --name task-beta
+orca worktree create --repo <R> --name task-gamma
+# 2. 各起 agent 终端
+orca terminal create --worktree task-alpha --command "opencode -m <model>"
+orca terminal create --worktree task-beta  --command "opencode -m <model>"
+orca terminal create --worktree task-gamma --command "opencode -m <model>"
+# 3. 派任务（alpha 产 features.md、beta 产 risks.md、gamma 读两者产 roadmap.md）
+orca terminal send --terminal <alpha-h> --text "产出 features.md" --enter
+orca terminal send --terminal <beta-h>  --text "产出 risks.md"   --enter
+orca terminal send --terminal <gamma-h> --text "读 features.md 与 risks.md，产出 roadmap.md" --enter
+# 4. 验证
+orca worktree ps              # live 状态（GAMMA_DONE 等回传）
+orca worktree show --worktree task-gamma   # 确认产出文件
+```
 
 ### Computer Use / 模拟器 / 浏览器
 
