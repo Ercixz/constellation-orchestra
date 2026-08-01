@@ -1,7 +1,7 @@
 # Paseo — 编排器档案
 
 > 分类：**编排器**（agent 生命周期守护、定时/心跳、跨会话的"场"）。
-> 接入总表见 `connectors/connector-orchestrators.md`；哲学见 `philosophy.md`。
+> 接入总表见 `connectors/agents/README.md` 与 `connectors/orchestrators/`；哲学见 `philosophy.md`。
 
 ## 编排器四问
 
@@ -20,7 +20,7 @@
 - **CLI 快捷跑**：`paseo run --provider codex/gpt-5.4 --mode full-access --workspace <id> "<prompt>"`。
 - **协作骨架**：worker 干完 `paseo send <manager-id> --no-wait "..."` → Manager 的 Paseo 会话自动收到 → 验收归档。
 - 等待哲学：任务 10–30+ 分钟是常态，**不轮询** `list_agents`/`get_agent_status`；完成/出错/要权限时通知自行到达。
-- 与 Orca/CMUX 互连：见 `connectors/connector-orchestrators.md`（CMUX 派单、Orca 子 Agent）。
+- 与 Orca/CMUX 互连：见 `connectors/agents/README.md`（CMUX 派单、Orca 子 Agent）。
 
 ### 3. 如何在各空间内理解空间组织结构
 
@@ -93,4 +93,4 @@ paseo heartbeat create --cron "*/15 * * * *" "check the build"
 
 ---
 
-相关文件：`philosophy.md`、`connectors/connector-orchestrators.md`、`connectors/connector-agents.md`、`SKILL.md`。
+相关文件：`philosophy.md`、`connectors/orchestrators/orca.md`、`connectors/orchestrators/cmux.md`、`connectors/agents/README.md`、`SKILL.md`。

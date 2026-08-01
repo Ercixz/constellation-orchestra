@@ -1,6 +1,6 @@
 ---
 name: constellation-orchestra
-description: 编排哲学与工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。核心二元论：编排器（Orca/CMUX/Paseo）vs AI Agent（Claude/Codex/OpenCode），一切皆可插拔环节。Use when you need to understand or configure the orchestration philosophy, connect to an orchestrator or an AI agent, organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or dispatch/verify multi-agent work. 含 connectors/（接入总表）+ orchestrators/（四问详解）+ protocol-cmux.md（派单协议）。
+description: 编排哲学与工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。核心二元论：编排器（Orca/CMUX/Paseo）vs AI Agent（Claude/Codex/OpenCode），一切皆可插拔环节；编排重量分级（轻/中/重）。Use when you need to understand or configure the orchestration philosophy, weigh a task (light/medium/heavy), connect to an orchestrator or an AI agent, organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or dispatch/verify multi-agent work. 含 connectors/orchestrators/（编排器四问详解）+ connectors/agents/（Agent 供应商/皮肤/拉起）+ protocol-cmux.md（派单协议）。
 ---
 
 # 星座交响乐团 — 编排哲学与工作区组织方法论
@@ -99,26 +99,29 @@ MyGame/（磁盘普通目录）
 
 ```
 constellation-orchestra/
-├── README.md                安装/更新说明（点明二元论）
-├── SKILL.md                本总纲（二元论 + 工作区方法论 + 导航）
-├── philosophy.md           【设计哲学】二元论 / 可插拔 / 主管-子 Agent / 星座乐团
+├── README.md                安装/更新说明（点明二元论 + 重量分级）
+├── SKILL.md                本总纲（二元论 + 重量分级 + 工作区方法论 + 导航）
+├── philosophy.md           【设计哲学】二元论 / 可插拔 / 主管-子 Agent / 重量分级 / 星座乐团
 ├── connectors/
-│   ├── connector-orchestrators.md   编排器接入总表（Orca/CMUX/Paseo 连法+互连）
-│   └── connector-agents.md          Agent 接入总表（Claude/Codex/OpenCode 连法+被拉起）
-├── orchestrators/
-│   ├── orca.md             Orca 档案（四问详解 + 命令速查）
-│   ├── cmux.md             CMUX 档案（四问详解 + 命令速查）
-│   └── paseo.md            Paseo 档案（四问详解 + 命令速查）
+│   ├── orchestrators/        编排器档案（四问详解）
+│   │   ├── orca.md           Orca 档案（CLI/协作/空间/GUI 四问 + 命令速查）
+│   │   ├── cmux.md           CMUX 档案（四问详解 + 命令速查）
+│   │   └── paseo.md          Paseo 档案（四问详解 + 命令速查）
+│   └── agents/               AI Agent 接入（供应商配置/皮肤/拉起）
+│       ├── README.md         接入总览 + 被编排器拉起的三种方式
+│       ├── claude-code.md    Claude Code（API key/base URL/皮肤/拉起）
+│       ├── codex.md          Codex（认证/fast mode/皮肤/拉起）
+│       └── opencode.md       OpenCode（provider 配置/TUI 皮肤/拉起）
 └── protocol-cmux.md        CMUX 派单协议与踩坑
 ```
 
 **阅读路径**：
-- 想懂哲学 → `philosophy.md`
-- 想连编排器/agent → `connectors/`
-- 想用某个编排器 → 对应 `orchestrators/*.md`（每文件回答"四问"）
+- 想懂哲学 → `philosophy.md`（含编排重量分级）
+- 想连编排器 → `connectors/orchestrators/*.md`（每文件回答"四问"）
+- 想配/拉 agent → `connectors/agents/*.md`
 - 想派单协作 → `protocol-cmux.md`
 
-**编排器四问**（每个 orchestrators/*.md 都回答）：
+**编排器四问**（每个 connectors/orchestrators/*.md 都回答）：
 1. 用什么 CLI/界面连接它
 2. 如何沟通、协作、连接到一起
 3. 如何在各空间内理解空间组织结构
@@ -133,7 +136,8 @@ constellation-orchestra/
 | **Paseo** | 编排器 | agent 生命周期守护 | 长期任务、定时/心跳、跨会话 |
 | **Claude Code / Codex / OpenCode** | AI Agent | 具体执行 | 被任一编排器拉起干活 |
 
-- 编排器接入：`connectors/connector-orchestrators.md`；Agent 接入：`connectors/connector-agents.md`
+- 编排器接入：`connectors/orchestrators/`；Agent 接入：`connectors/agents/`
+- **任务重量分级（轻/中/重）**：见 `philosophy.md` 第五节——能轻度绝不重度
 - CMUX 派单协议与踩坑：`protocol-cmux.md`
 
 ## 七、踩坑记录（指挥家备忘录）

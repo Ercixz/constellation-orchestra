@@ -1,7 +1,7 @@
 # Orca — 编排器档案
 
 > 分类：**编排器**（提供 worktree 隔离 + 内置任务编排的"场"）。
-> 接入总表见 `connectors/connector-orchestrators.md`；哲学见 `philosophy.md`。
+> 接入总表见 `connectors/agents/README.md` 与 `connectors/orchestrators/`；哲学见 `philosophy.md`。
 
 ## 编排器四问
 
@@ -18,7 +18,7 @@
 - 编排闭环：`orchestration run-create` → `task-create` → `dispatch` → `worker-start` → `gate-create`（决策门）→ `gate-resolve` → `worker-read` 验收。
 - 消息：`orchestration send` / `check` / `ask`（阻塞问协调者）/ `reply` / `inbox`。
 - 拉起 agent：`worktree create --name <n> --repo R --agent <id> --prompt "<任务>"`；或 `terminal create --worktree active --command "codex|claude|opencode"`。
-- 与外部协作：worktree 内 terminal 可被 CMUX 面板承载；agent 干完可通过 `paseo send` 回传给 Paseo 主管（见 connector-orchestrators.md）。
+- 与外部协作：worktree 内 terminal 可被 CMUX 面板承载；agent 干完可通过 `paseo send` 回传给 Paseo 主管（见 `connectors/agents/README.md`）。
 
 ### 3. 如何在各空间内理解空间组织结构
 
@@ -81,4 +81,4 @@ Orca 的空间是**三层叠加**（详见 SKILL.md 心智模型）：
 
 ---
 
-相关文件：`philosophy.md`、`connectors/connector-orchestrators.md`、`connectors/connector-agents.md`、`SKILL.md`。
+相关文件：`philosophy.md`、`connectors/orchestrators/cmux.md`、`connectors/orchestrators/paseo.md`、`connectors/agents/README.md`、`SKILL.md`。

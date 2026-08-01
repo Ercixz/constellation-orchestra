@@ -1,6 +1,6 @@
 # 编排哲学（Design Philosophy）
 
-> 本文件是 constellation-orchestra 的设计灵魂。所有具体工具说明（connectors/、orchestrators/）都从这里长出来。
+> 本文件是 constellation-orchestra 的设计灵魂。所有具体工具说明（connectors/orchestrators/、connectors/agents/）都从这里长出来。
 > 读任何工具文件之前，先理解这里的二元论。
 
 ## 一、二元论：编排器 vs AI Agent
@@ -81,13 +81,32 @@ Paseo 主管汇总 → 验收 → 反馈用户
 
 **两者合一**：星座决定"谁在哪"，乐团决定"怎么一起干活"。
 
-## 五、实践推论
+## 五、编排重量分级（轻 / 中 / 重）
+
+任务流要能**轻/重切换**：轻度任务不要重型编排（如 LangGraph/Pydantic AI 那类流程编排太重）。按任务复杂度先分级，再选编排方式：
+
+| 级别 | 适用 | 编排方式 | 例子 |
+|---|---|---|---|
+| **轻度** | 单任务、快速问答、小改 | 无/极少编排，直接一个 agent 干 | CMUX 单 surface、直接对话 |
+| **中度** | 多任务并行、需要派单/验收 | 文件制协议（tickets/receipts）+ 简单派单 | CMUX 多 surface、Paseo send |
+| **重度** | 复杂流程、状态机、多阶段流水线 | 流程编排框架 | LangGraph / Pydantic AI |
+
+**核心原则**：**任务多轻就多轻，能轻度绝不重度**——编排器/Agent 可插拔的意义就在于此：轻任务直接一个 agent 干，重任务才上流程编排框架，中间用文件制协议兜底。
+
+- 判据：几个任务？要不要并行？要不要验收？要不要状态机/分支？
+  - 单件、不验收 → 轻度
+  - 多件、要派单验收 → 中度
+  - 状态机/多阶段流水线 → 重度
+- 编排器选型不绑定重量级：CMUX 可以轻（单 surface）也可以中（多 surface）；Paseo 管生命周期；Orca 管隔离 worktree。**重量分级管"怎么组织任务"，不限制用哪个编排器。**
+
+## 六、实践推论
 
 1. 遇到"组织/调度"问题 → 想在编排器层解决（哪个编排器、怎么派、怎么等结果）。
 2. 遇到"干一件事"问题 → 想 AI Agent 层（哪个 agent、什么提示、怎么验收）。
-3. 不要因为熟悉某工具就把它当成唯一解——**它是环节，可换**。
-4. 新工具接入时，先分类（编排器 or Agent），再找对应 connector，四问答齐即可上手。
+3. **先分级再编排**：任务多轻就多轻，能轻度绝不重度（见"编排重量分级"）。
+4. 不要因为熟悉某工具就把它当成唯一解——**它是环节，可换**。
+5. 新工具接入时，先分类（编排器 or Agent），再找对应 connector，四问答齐即可上手。
 
 ---
 
-相关文件：`SKILL.md`（总纲）、`connectors/connector-orchestrators.md`（编排器接入）、`connectors/connector-agents.md`（Agent 接入）、`orchestrators/*.md`（各编排器四问详解）。
+相关文件：`SKILL.md`（总纲）、`connectors/orchestrators/*.md`（编排器四问详解）、`connectors/agents/*.md`（Agent 接入）。

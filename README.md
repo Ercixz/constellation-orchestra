@@ -7,6 +7,7 @@
 ## 核心哲学（30 秒版）
 
 - **二元论（本 skill 的灵魂）**：整个生态只有两类东西——**编排器**（Orca/CMUX/Paseo，组织/调度/派发的"场"）与 **AI Agent**（Claude Code/Codex/OpenCode，执行任务的"单元"）。二者都是**可插拔的环节**，唯一的定位器就是这两类。
+- **编排重量分级**：任务分轻/中/重——能轻度绝不重度，编排器/Agent 可插拔的意义就在于此
 - **Project 是抽象容器**，没有磁盘实体；真实的是 git Repo（worktree 隔离）和 Folder WS（直改）
 - **代码用 worktree 隔离，资产/文档用 folder workspace 直改**
 - **团队三角色**：Manager（指挥）/ Worker（乐手）/ Reviewer（审谱）
@@ -14,20 +15,22 @@
 
 ## 这是什么
 
-一个 opencode skill（也可用于 Claude Code / 其他支持 SKILL.md 的 agent），把"编排哲学 + 工具接入方法"沉淀为一份总纲 + 一份哲学 + 两层 Connector + 三份编排器档案 + 一份派单协议。
+一个 opencode skill（也可用于 Claude Code / 其他支持 SKILL.md 的 agent），把"编排哲学 + 工具接入方法"沉淀为一份总纲 + 一份哲学 + Connector 两层结构 + 一份派单协议。
 
 | 文件 | 内容 |
 |---|---|
-| `SKILL.md` | 总纲：二元论 / 心智模型 / 项目蓝图 / 团队角色 / 任务闭环 / 导航 |
-| `philosophy.md` | 【设计哲学】编排器 vs AI Agent 二元论、可插拔、主管-子 Agent、星座乐团 |
-| `connectors/connector-orchestrators.md` | 编排器接入总表（Orca/CMUX/Paseo 连法 + 互连） |
-| `connectors/connector-agents.md` | AI Agent 接入总表（Claude/Codex/OpenCode 连法 + 被拉起） |
-| `orchestrators/orca.md` | Orca 档案（四问 + 命令速查） |
-| `orchestrators/cmux.md` | CMUX 档案（四问 + 命令速查） |
-| `orchestrators/paseo.md` | Paseo 档案（四问 + 命令速查） |
+| `SKILL.md` | 总纲：二元论 / 重量分级 / 心智模型 / 项目蓝图 / 团队角色 / 任务闭环 / 导航 |
+| `philosophy.md` | 【设计哲学】编排器 vs AI Agent 二元论、可插拔、主管-子 Agent、编排重量分级、星座乐团 |
+| `connectors/orchestrators/orca.md` | Orca 档案（四问 + 命令速查） |
+| `connectors/orchestrators/cmux.md` | CMUX 档案（四问 + 命令速查） |
+| `connectors/orchestrators/paseo.md` | Paseo 档案（四问 + 命令速查） |
+| `connectors/agents/README.md` | AI Agent 接入总览 + 被编排器拉起的三种方式 |
+| `connectors/agents/claude-code.md` | Claude Code（供应商配置/皮肤/拉起） |
+| `connectors/agents/codex.md` | Codex（认证/fast mode/皮肤/拉起） |
+| `connectors/agents/opencode.md` | OpenCode（provider 配置/TUI 皮肤/拉起） |
 | `protocol-cmux.md` | CMUX 派单协议与踩坑记录 |
 
-每个 `orchestrators/*.md` 都回答"编排器四问"：CLI 连接 / 沟通协作 / 空间结构 / GUI 关系。
+每个 `connectors/orchestrators/*.md` 都回答"编排器四问"：CLI 连接 / 沟通协作 / 空间结构 / GUI 关系。
 
 ## 安装
 

@@ -1,7 +1,7 @@
 # CMUX — 编排器档案
 
 > 分类：**编排器**（终端复用器，多面板并行派单的"场"）。
-> 接入总表见 `connectors/connector-orchestrators.md`；哲学见 `philosophy.md`。
+> 接入总表见 `connectors/agents/README.md` 与 `connectors/orchestrators/`；哲学见 `philosophy.md`。
 
 ## 编排器四问
 
@@ -103,4 +103,4 @@ CMUX 的空间层级：
 
 ---
 
-相关文件：`philosophy.md`、`connectors/connector-orchestrators.md`、`protocol-cmux.md`、`SKILL.md`。
+相关文件：`philosophy.md`、`connectors/orchestrators/orca.md`、`connectors/orchestrators/paseo.md`、`protocol-cmux.md`、`SKILL.md`。
