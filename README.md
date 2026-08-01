@@ -4,24 +4,30 @@
 
 工作区组织方法论 skill。它不是"怎么用工具"，而是**"怎么组织一切"**——项目结构、团队分工、任务流转、工具选型。任何 agent 装上它，就明白这套设计哲学。
 
+## 核心哲学（30 秒版）
+
+- **二元论（本 skill 的灵魂）**：整个生态只有两类东西——**编排器**（Orca/CMUX/Paseo，组织/调度/派发的"场"）与 **AI Agent**（Claude Code/Codex/OpenCode，执行任务的"单元"）。二者都是**可插拔的环节**，唯一的定位器就是这两类。
+- **Project 是抽象容器**，没有磁盘实体；真实的是 git Repo（worktree 隔离）和 Folder WS（直改）
+- **代码用 worktree 隔离，资产/文档用 folder workspace 直改**
+- **团队三角色**：Manager（指挥）/ Worker（乐手）/ Reviewer（审谱）
+- **任务闭环**：建单 → 派发 → 执行 → 回执 → 独立验收 → 归档
+
 ## 这是什么
 
-一个 opencode skill（也可用于 Claude Code / 其他支持 SKILL.md 的 agent），把工作区的组织方法沉淀为一份总纲 + 三份工具手册 + 一份派单协议。
+一个 opencode skill（也可用于 Claude Code / 其他支持 SKILL.md 的 agent），把"编排哲学 + 工具接入方法"沉淀为一份总纲 + 一份哲学 + 两层 Connector + 三份编排器档案 + 一份派单协议。
 
 | 文件 | 内容 |
 |---|---|
-| `SKILL.md` | 方法论总纲：心智模型 / 项目蓝图 / 团队角色 / 任务闭环 / 选型 / 踩坑 |
-| `tool-cmux.md` | CMUX（终端多面板编排）命令手册 |
-| `tool-orca.md` | Orca（worktree + 内置编排平台）命令手册 |
-| `tool-paseo.md` | Paseo（agent 守护编排）命令手册 |
+| `SKILL.md` | 总纲：二元论 / 心智模型 / 项目蓝图 / 团队角色 / 任务闭环 / 导航 |
+| `philosophy.md` | 【设计哲学】编排器 vs AI Agent 二元论、可插拔、主管-子 Agent、星座乐团 |
+| `connectors/connector-orchestrators.md` | 编排器接入总表（Orca/CMUX/Paseo 连法 + 互连） |
+| `connectors/connector-agents.md` | AI Agent 接入总表（Claude/Codex/OpenCode 连法 + 被拉起） |
+| `orchestrators/orca.md` | Orca 档案（四问 + 命令速查） |
+| `orchestrators/cmux.md` | CMUX 档案（四问 + 命令速查） |
+| `orchestrators/paseo.md` | Paseo 档案（四问 + 命令速查） |
 | `protocol-cmux.md` | CMUX 派单协议与踩坑记录 |
 
-## 核心哲学（30 秒版）
-
-- **Project 是抽象容器**，没有磁盘实体；真实的是 git Repo（worktree 隔离）和 Folder WS（直改）
-- **代码用 worktree 隔离，资产/文档用 folder workspace 直改**——一个项目可以既有代码又有资产
-- **团队三角色**：Manager（指挥）/ Worker（乐手）/ Reviewer（审谱）
-- **任务闭环**：建单 → 派发 → 执行 → 回执 → 独立验收 → 归档
+每个 `orchestrators/*.md` 都回答"编排器四问"：CLI 连接 / 沟通协作 / 空间结构 / GUI 关系。
 
 ## 安装
 
@@ -33,7 +39,7 @@ git clone https://github.com/Ercixz/constellation-orchestra.git ~/.config/openco
 git clone https://github.com/Ercixz/constellation-orchestra.git ~/.claude/skills/constellation-orchestra
 ```
 
-安装后 agent 启动时自动加载；遇到组织架构/团队/任务流转相关问题时，会按 description 自动调用。
+安装后 agent 启动时自动加载；遇到编排/组织/团队/任务流转相关问题时，会按 description 自动调用。
 
 ## 更新
 

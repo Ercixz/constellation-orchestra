@@ -1,14 +1,31 @@
 ---
 name: constellation-orchestra
-description: 工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。Use when you need to organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or explain how this workspace organizes multi-agent collaboration. 含三工具手册与派单协议（tool-*.md / protocol-cmux.md）。
+description: 编排哲学与工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。核心二元论：编排器（Orca/CMUX/Paseo）vs AI Agent（Claude/Codex/OpenCode），一切皆可插拔环节。Use when you need to understand or configure the orchestration philosophy, connect to an orchestrator or an AI agent, organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or dispatch/verify multi-agent work. 含 connectors/（接入总表）+ orchestrators/（四问详解）+ protocol-cmux.md（派单协议）。
 ---
 
-# 星座交响乐团 — 工作区组织方法论
+# 星座交响乐团 — 编排哲学与工作区组织方法论
 
 > 世界观：每个 agent 是一颗星，群星各居其位（星座=组织架构）；
 > 指挥家执棒，众乐手齐奏（乐团=协同流程）。两者合一 = 本工作区的作战总纲。
+>
+> **本 skill 的灵魂（必读）**：编排器 vs AI Agent 的**二元论**——二者是可插拔的两个环节。详见 `philosophy.md`。
 
-## 一、核心心智模型（先看这个）
+## 零、二元论：编排器 vs AI Agent（先看这个）
+
+整个工具生态里**只有两类东西**，这是唯一的定位器：
+
+| 类 | 成员 | 本质 |
+|---|---|---|
+| **编排器 Orchestrator** | Orca、CMUX、Paseo | 组织/调度/派发的"场"（空间、面板、生命周期、协议） |
+| **AI Agent** | Claude Code、Codex、OpenCode | 执行具体任务的"单元"（读提示、动手、产出） |
+
+- **三者都是编排器，只是形态不同**：Orca=worktree+内置编排，CMUX=终端多面板并行，Paseo=agent 生命周期守护。
+- **三者都是子 Agent，可随时更换**：任一编排器都能拉起任一 agent。
+- **唯一的定位器 = "编排" 还是 "AI Agent"**。提到任何工具先问这一句。
+- 未来架构：**Paseo 主管 Agent ↔ 用户对话，主管把任务分发到 Orca 里的子 Agent**。
+- 完整哲学 → `philosophy.md`。
+
+## 一、核心心智模型（工作区组织）
 
 ### 1. Project 是抽象容器
 
@@ -49,14 +66,9 @@ MyGame/（磁盘普通目录）
 └── docs/    → Orca 里 Folder WS → 单 agent 直改
 ```
 
-- worktree **只针对代码文件夹**（它是 code 的分支，不是整个项目的）
-- 资产文件夹**不被 worktree 复制**（大资产复制多份会疯）
-- 侧边栏用 Group（"来自项目的新组"）把代码区/资产区分组
-
-**关键操作**：
-- 代码文件夹注册：`orca repo add --path <code路径>`（需已 git init）
-- 资产/文档：**只能 UI 创建** folder workspace（`orca repo add` 拒绝非 git 目录）
-- folder → git 转换：git init 后**重新注册**（删旧添新，10 秒），会丢 folder 会话记录
+- worktree **只针对代码文件夹**；资产文件夹**不被 worktree 复制**；侧边栏用 Group 分组。
+- 代码注册：`orca repo add --path <code路径>`（需已 git init）；资产/文档：只能 UI 创建 folder workspace。
+- folder → git 转换：git init 后**重新注册**（删旧添新，10 秒），会丢 folder 会话记录。
 
 ## 三、团队角色（星座的星位）
 
@@ -83,18 +95,48 @@ MyGame/（磁盘普通目录）
 - 一个 surface 一次只跑一个任务（叠加会 QUEUED 卡死）
 - 凭据绝不写入回执/知识库明文
 
-## 五、工具选型速查（乐团用什么乐器）
+## 五、文件导航（本 skill 结构）
 
-| 工具 | 管什么 | 何时用 |
-|---|---|---|
-| **CMUX** | 终端面板编排 | 快速并行派单（运维/多任务） |
-| **Orca** | worktree + 内置编排 | 需要隔离的开发任务、内置任务系统 |
-| **Paseo** | agent 生命周期守护 | 长期任务、定时/心跳、跨会话 |
+```
+constellation-orchestra/
+├── README.md                安装/更新说明（点明二元论）
+├── SKILL.md                本总纲（二元论 + 工作区方法论 + 导航）
+├── philosophy.md           【设计哲学】二元论 / 可插拔 / 主管-子 Agent / 星座乐团
+├── connectors/
+│   ├── connector-orchestrators.md   编排器接入总表（Orca/CMUX/Paseo 连法+互连）
+│   └── connector-agents.md          Agent 接入总表（Claude/Codex/OpenCode 连法+被拉起）
+├── orchestrators/
+│   ├── orca.md             Orca 档案（四问详解 + 命令速查）
+│   ├── cmux.md             CMUX 档案（四问详解 + 命令速查）
+│   └── paseo.md            Paseo 档案（四问详解 + 命令速查）
+└── protocol-cmux.md        CMUX 派单协议与踩坑
+```
 
-- 三工具完整命令手册：见本 skill 的 `tool-cmux.md` / `tool-orca.md` / `tool-paseo.md`
-- CMUX 派单协议与踩坑：见本 skill 的 `protocol-cmux.md`
+**阅读路径**：
+- 想懂哲学 → `philosophy.md`
+- 想连编排器/agent → `connectors/`
+- 想用某个编排器 → 对应 `orchestrators/*.md`（每文件回答"四问"）
+- 想派单协作 → `protocol-cmux.md`
 
-## 六、踩坑记录（指挥家备忘录）
+**编排器四问**（每个 orchestrators/*.md 都回答）：
+1. 用什么 CLI/界面连接它
+2. 如何沟通、协作、连接到一起
+3. 如何在各空间内理解空间组织结构
+4. 编排 GUI 关系（多开窗口/切分 pane/布局）
+
+## 六、工具选型速查（乐团用什么乐器）
+
+| 工具 | 类别 | 管什么 | 何时用 |
+|---|---|---|---|
+| **CMUX** | 编排器 | 终端面板编排 | 快速并行派单（运维/多任务） |
+| **Orca** | 编排器 | worktree + 内置编排 | 需要隔离的开发任务、内置任务系统 |
+| **Paseo** | 编排器 | agent 生命周期守护 | 长期任务、定时/心跳、跨会话 |
+| **Claude Code / Codex / OpenCode** | AI Agent | 具体执行 | 被任一编排器拉起干活 |
+
+- 编排器接入：`connectors/connector-orchestrators.md`；Agent 接入：`connectors/connector-agents.md`
+- CMUX 派单协议与踩坑：`protocol-cmux.md`
+
+## 七、踩坑记录（指挥家备忘录）
 
 1. **Orca 的 folder workspace 只能 UI 创建**——CLI 无命令（`repo add` 拒绝非 git）
 2. **ProjectGroup（"来自项目的新组"）= 分组容器**，folder workspace 挂它下面（parentPath）
@@ -104,12 +146,9 @@ MyGame/（磁盘普通目录）
 6. **同 surface 勿叠加任务**；QUEUED 卡死按 Esc×2，再不行 /exit 重开（-s 恢复会话）
 7. **-s 恢复旧 session 会覆盖模型**，需在 TUI 内 /models 重新切 flash
 8. **含凭据任务**：key 只进本机 600 权限配置，派单经 CMUX 会话单独传递
+9. **编排器是环节不是终点**：换编排器不影响 agent 层，换 agent 不影响编排层（见 philosophy.md）
 
-## 七、相关资源
+## 八、相关资源
 
-- 本 skill 结构：
-  - `SKILL.md`（本总纲：方法论）
-  - `tool-cmux.md` / `tool-orca.md` / `tool-paseo.md`（三工具命令手册）
-  - `protocol-cmux.md`（CMUX 派单协议与踩坑）
 - 任务单/回执：`/Users/lueric/Isonoimic/orchestrator-test/`
 - 知识库：`AI-Persistence/`（归档铁律见 AGENTS.md）
