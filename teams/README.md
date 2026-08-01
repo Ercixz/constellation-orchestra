@@ -41,6 +41,31 @@ Step 5 · 拉起
 
 > ⚠️ 分工铁律：**Manager 不对用户，秘书不碰技术**。技术细节（dispatch/submission 原文、代码、日志）留在文件层；人类只读秘书转译后的报告。
 
+## 任务连续性铁律（防止任务悬停）
+
+**每次会话被打断/恢复/被用户提问后，必须主动追踪在途任务，不得让任务悬停。** 具体：
+
+- **秘书**：维护**在途任务清单**（todo），被打断后第一件事 = 盘点所有未闭环工单（dispatch 无对应 submission/acceptance 的），逐个催对应 Manager。**用户每次提问，先答问题，再补一句在途任务状态。**
+- **Manager**：被打断/恢复后，先检查自己名下所有派出的 dispatch 是否有对应 submission；缺的立即催 Worker。
+- **判定**：一个 dispatch 没有对应 submission + acceptance = 悬停任务，必须主动追踪到闭环。
+- 闭环标记：`submission` 到达 → `acceptance` 写入 → 才算完成。
+
+## 层级通信铁律（禁止越层）
+
+**消息只沿层级单向流动，任何角色不得越过直接上级/下级通信：**
+
+```
+秘书 ←→ Manager（双向，唯一跨层对话）
+Manager ←→ Worker/Researcher（双向）
+秘书 ✗→ Worker/Researcher（禁止直接对话）
+Worker/Researcher ✗→ 秘书（禁止直接汇报）
+```
+
+- **秘书**只跟 Manager 对话：派单、催办、收汇总都通过 Manager，**绝不直接向 Worker 发指令/催办**。
+- **Worker/Researcher** 只向自己的 Manager 汇报：submission 文件写给 Manager（agent-journal 落盘），**不直接找秘书**。
+- 秘书需要知道 Worker 状态 → 问 Manager；Manager 需要秘书传达 → 自己直接对接。
+- 越层 = 违规，立即纠正并回到正常链路。
+
 ## 角色-模型推荐表
 
 | 角色 | 推荐 Agent | 推荐模型 | 说明 |
