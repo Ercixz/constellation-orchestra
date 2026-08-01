@@ -121,6 +121,7 @@ git worktree 机制：**LFS 对象在 `.git/lfs/objects/` 共享一份**，但**
 
 | 角色 | 职责 | 工具映射 |
 |---|---|---|
+| **秘书（Secretary）** | 唯一对话入口、拆需求、**把技术汇报转译成人类可读的 HTML 报告**（人机桥梁，不碰技术） | Paseo agent / 直接对话 |
 | **Manager（指挥家）** | **只做技术规划**：建任务单、派发、汇总结论，不亲自执行/不直接合并 | 项目根目录 folder workspace（Paseo / 根目录 opencode 终端） |
 | **Worker（乐手）** | 读任务单执行、写回执、汇报 | Orca **worktree** terminal（隔离执行） |
 | **Checker（审谱者）** | 在 **main tree** 上把 worker 成果合并进 main、独立复核 live 状态，不轻信 | Orca main worktree / 独立 agent |
@@ -236,6 +237,9 @@ constellation-orchestra/
 7. **-s 恢复旧 session 会覆盖模型**，需在 TUI 内 /models 重新切 flash
 8. **含凭据任务**：key 只进本机 600 权限配置，派单经 CMUX 会话单独传递
 9. **编排器是环节不是终点**：换编排器不影响 agent 层，换 agent 不影响编排层（见 philosophy.md）
+10. **协作目录可能未 git-track**（实测：agent-journal/、AI persistence/、.agents/ 不在 worktree 里）——worktree 里的 Worker 看不到它们，跨树文件 I/O 必须用**绝对路径**指向主树
+11. **终端 send 中文会编码损坏**：派单正文写文件（dispatch），终端只发纯 ASCII 指针（文件路径）；回执同样走文件（submission + --prompt-file）
+12. **子 Agent 回传通道**：Orca 管理的 agent 无 Paseo id（Paseo 只注册主管）——子 Agent 不能 `paseo send`，回执写 submission 文件到主树 agent-journal/，由 Manager 从磁盘收集
 
 ## 八、相关资源
 
