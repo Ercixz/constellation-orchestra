@@ -60,7 +60,8 @@ Orca 侧：每仓库注册为一个 Project → 任务来源选择器统一显�
 - 轻/中型直连协议（`philosophy.md` 第六节"团队协作分派"）是这套架构的轻量档；重型（wayfinder 规划 + 流程框架）是重量档前置。
 - 编排重量分级（轻/中/重）是哲学层面的"任务该多重"，本文件是"定了重量之后系统怎么跑"。
 - 介质层保留 tickets/receipts 文件制——轻量任务不强制上 GitHub。
+- **团队怎么搭**：见 `teams/README.md`（团队搭建向导）+ `teams/research-team.md`（研究团队模板）——本架构的具体角色落地。
 
 ---
 
-相关文件：`SKILL.md`（总纲）、`philosophy.md`（哲学：二元论/可插拔/重量分级/轻重分离）、`protocol-cmux.md`（派单协议）。
+相关文件：`SKILL.md`（总纲）、`philosophy.md`（哲学：二元论/可插拔/重量分级/轻重分离）、`teams/`（团队向导与模板）、`protocol-cmux.md`（派单协议）。

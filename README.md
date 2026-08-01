@@ -9,6 +9,7 @@
 - **二元论（本 skill 的灵魂）**：整个生态只有两类东西——**编排器**（Orca/CMUX/Paseo，组织/调度/派发的"场"）与 **AI Agent**（Claude Code/Codex/OpenCode，执行任务的"单元"）。二者都是**可插拔的环节**，唯一的定位器就是这两类。
 - **编排重量分级**：任务分轻/中/重——能轻度绝不重度，编排器/Agent 可插拔的意义就在于此
 - **系统架构**：GitHub Issues 作任务载体 + Orca 编排 + 多 Agent 协作 + wayfinder 规划（四层架构）
+- **团队向导**：默认角色=秘书（Paseo），按向导搭秘书/Manager/研究员团队（见 `teams/`）
 - **Project 是抽象容器**，没有磁盘实体；真实的是 git Repo（worktree 隔离）和 Folder WS（直改）
 - **代码用 worktree 隔离，资产/文档用 folder workspace 直改**
 - **团队三角色**：Manager（指挥）/ Worker（乐手）/ Reviewer（审谱）
@@ -23,6 +24,8 @@
 | `SKILL.md` | 总纲：二元论 / 重量分级 / 心智模型 / 项目蓝图 / 团队角色 / 任务闭环 / 导航 |
 | `philosophy.md` | 【设计哲学】编排器 vs AI Agent 二元论、可插拔、主管-子 Agent、编排重量分级、团队协作分派、星座乐团 |
 | `management.md` | 【管理】系统架构：GitHub 任务平台（四层架构 / 任务闭环 / 组件职责 / 跨项目 / 决策链） |
+| `teams/README.md` | 团队搭建向导入口（交互 5 步 / 角色-模型推荐表 / 拉起命令模板） |
+| `teams/research-team.md` | 研究团队模板（结构 / 角色职责 / 消息流 / 工单格式 / 拉起） |
 | `connectors/orchestrators/orca.md` | Orca 档案（四问 + 命令速查） |
 | `connectors/orchestrators/cmux.md` | CMUX 档案（四问 + 命令速查） |
 | `connectors/orchestrators/paseo.md` | Paseo 档案（四问 + 命令速查） |

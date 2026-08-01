@@ -1,6 +1,6 @@
 ---
 name: constellation-orchestra
-description: 编排哲学与工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。核心二元论：编排器（Orca/CMUX/Paseo）vs AI Agent（Claude/Codex/OpenCode），一切皆可插拔环节；编排重量分级（轻/中/重）+ 团队协作分派（轻/中型直连协议，不套 LangGraph）+ 管理章节（GitHub 任务平台四层架构）。Use when you need to understand or configure the orchestration philosophy, weigh a task (light/medium/heavy), dispatch a light/medium task via direct protocol (Paseo supervisor ↔ orchestrator ↔ sub-agent), understand the management architecture (GitHub-Issues-as-task-platform: four layers / task loop / cross-project / decision chain), connect to an orchestrator or an AI agent, organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or dispatch/verify multi-agent work. 含 management.md（系统架构）+ connectors/orchestrators/（编排器四问详解）+ connectors/agents/（Agent 供应商/皮肤/拉起）+ protocol-cmux.md（派单协议与轻/中型任务协议速查）+ philosophy.md（哲学：二元论/重量分级/轻重分离）。
+description: 编排哲学与工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。核心二元论：编排器（Orca/CMUX/Paseo）vs AI Agent（Claude/Codex/OpenCode），一切皆可插拔环节；编排重量分级（轻/中/重）+ 团队协作分派（轻/中型直连协议，不套 LangGraph）+ 管理章节（GitHub 任务平台四层架构）+ 团队搭建向导。Use when you need to understand or configure the orchestration philosophy, weigh a task (light/medium/heavy), dispatch a light/medium task via direct protocol (Paseo supervisor ↔ orchestrator ↔ sub-agent), understand the management architecture (GitHub-Issues-as-task-platform: four layers / task loop / cross-project / decision chain), set up a collaboration team via the team wizard (secretary/manager/researcher roles, Paseo/Orca/CMUX), connect to an orchestrator or an AI agent, organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or dispatch/verify multi-agent work. 含 teams/（团队向导）+ management.md（系统架构）+ connectors/orchestrators/（编排器四问详解）+ connectors/agents/（Agent 供应商/皮肤/拉起）+ protocol-cmux.md（派单协议与轻/中型任务协议速查）+ philosophy.md（哲学：二元论/重量分级/轻重分离）。
 ---
 
 # 星座交响乐团 — 编排哲学与工作区组织方法论
@@ -103,6 +103,9 @@ constellation-orchestra/
 ├── SKILL.md                本总纲（二元论 + 重量分级 + 工作区方法论 + 导航）
 ├── philosophy.md           【设计哲学】二元论 / 可插拔 / 主管-子 Agent / 重量分级 / 轻重分离 / 星座乐团
 ├── management.md           【管理】系统架构：GitHub 任务平台（四层/任务闭环/组件职责/跨项目/决策链）
+├── teams/                   【团队向导】搭建协作团队
+│   ├── README.md           团队搭建向导入口（交互 5 步 / 角色-模型推荐表 / 拉起命令模板）
+│   └── research-team.md    研究团队模板（结构/职责/消息流/工单格式/拉起）
 ├── connectors/
 │   ├── orchestrators/        编排器档案（四问详解）
 │   │   ├── orca.md           Orca 档案（CLI/协作/空间/GUI 四问 + 命令速查）
@@ -119,6 +122,7 @@ constellation-orchestra/
 **阅读路径**：
 - 想懂哲学（为什么） → `philosophy.md`（含编排重量分级 + 团队协作分派）
 - 想懂系统怎么跑（怎么管理） → `management.md`（系统架构：GitHub 任务平台）
+- 想搭团队 → `teams/README.md`（团队搭建向导）+ `teams/research-team.md`（研究团队模板）
 - 想连编排器 → `connectors/orchestrators/*.md`（每文件回答"四问"）
 - 想配/拉 agent → `connectors/agents/*.md`
 - 想派单协作 → `protocol-cmux.md`
