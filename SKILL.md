@@ -1,6 +1,6 @@
 ---
 name: constellation-orchestra
-description: 编排哲学与工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。核心二元论：编排器（Orca/CMUX/Paseo）vs AI Agent（Claude/Codex/OpenCode），一切皆可插拔环节；编排重量分级（轻/中/重）+ 团队协作分派（轻/中型直连协议，不套 LangGraph）+ 系统架构（GitHub 任务平台四层架构）。Use when you need to understand or configure the orchestration philosophy, weigh a task (light/medium/heavy), dispatch a light/medium task via direct protocol (Paseo supervisor ↔ orchestrator ↔ sub-agent), understand the GitHub-Issues-as-task-platform architecture (four layers / task loop / cross-project), connect to an orchestrator or an AI agent, organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or dispatch/verify multi-agent work. 含 connectors/orchestrators/（编排器四问详解）+ connectors/agents/（Agent 供应商/皮肤/拉起）+ protocol-cmux.md（派单协议与轻/中型任务协议速查）+ philosophy.md（含系统架构）。
+description: 编排哲学与工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。核心二元论：编排器（Orca/CMUX/Paseo）vs AI Agent（Claude/Codex/OpenCode），一切皆可插拔环节；编排重量分级（轻/中/重）+ 团队协作分派（轻/中型直连协议，不套 LangGraph）+ 管理章节（GitHub 任务平台四层架构）。Use when you need to understand or configure the orchestration philosophy, weigh a task (light/medium/heavy), dispatch a light/medium task via direct protocol (Paseo supervisor ↔ orchestrator ↔ sub-agent), understand the management architecture (GitHub-Issues-as-task-platform: four layers / task loop / cross-project / decision chain), connect to an orchestrator or an AI agent, organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or dispatch/verify multi-agent work. 含 management.md（系统架构）+ connectors/orchestrators/（编排器四问详解）+ connectors/agents/（Agent 供应商/皮肤/拉起）+ protocol-cmux.md（派单协议与轻/中型任务协议速查）+ philosophy.md（哲学：二元论/重量分级/轻重分离）。
 ---
 
 # 星座交响乐团 — 编排哲学与工作区组织方法论
@@ -101,7 +101,8 @@ MyGame/（磁盘普通目录）
 constellation-orchestra/
 ├── README.md                安装/更新说明（点明二元论 + 重量分级）
 ├── SKILL.md                本总纲（二元论 + 重量分级 + 工作区方法论 + 导航）
-├── philosophy.md           【设计哲学】二元论 / 可插拔 / 主管-子 Agent / 重量分级 / 系统架构(GitHub 任务平台) / 星座乐团
+├── philosophy.md           【设计哲学】二元论 / 可插拔 / 主管-子 Agent / 重量分级 / 轻重分离 / 星座乐团
+├── management.md           【管理】系统架构：GitHub 任务平台（四层/任务闭环/组件职责/跨项目/决策链）
 ├── connectors/
 │   ├── orchestrators/        编排器档案（四问详解）
 │   │   ├── orca.md           Orca 档案（CLI/协作/空间/GUI 四问 + 命令速查）
@@ -116,11 +117,11 @@ constellation-orchestra/
 ```
 
 **阅读路径**：
-- 想懂哲学 → `philosophy.md`（含编排重量分级 + 系统架构：GitHub 任务平台）
+- 想懂哲学（为什么） → `philosophy.md`（含编排重量分级 + 团队协作分派）
+- 想懂系统怎么跑（怎么管理） → `management.md`（系统架构：GitHub 任务平台）
 - 想连编排器 → `connectors/orchestrators/*.md`（每文件回答"四问"）
 - 想配/拉 agent → `connectors/agents/*.md`
 - 想派单协作 → `protocol-cmux.md`
-- 想懂系统架构 → `philosophy.md` 第七节（四层架构/任务闭环/决策链，完整设计稿见 `AI-Persistence/Memory-Bucket/2026-08-01-System-Architecture-GitHub-Task-Platform.md`）
 
 **编排器四问**（每个 connectors/orchestrators/*.md 都回答）：
 1. 用什么 CLI/界面连接它
@@ -140,7 +141,7 @@ constellation-orchestra/
 - 编排器接入：`connectors/orchestrators/`；Agent 接入：`connectors/agents/`
 - **任务重量分级（轻/中/重）**：见 `philosophy.md` 第五节——能轻度绝不重度
 - **团队协作分派（轻重分离）**：轻/中型走直连协议（Paseo 主管 ↔ 编排器 ↔ 子 Agent，不套 LangGraph），见 `philosophy.md` 第六节；协议速查见 `protocol-cmux.md`
-- **系统架构（GitHub 任务平台）**：四层架构 + 任务闭环 + 决策链（Gitea→GitLab→GitHub），见 `philosophy.md` 第七节
+- **系统架构（GitHub 任务平台）**：四层架构 + 任务闭环 + 决策链（Gitea→GitLab→GitHub），见 `management.md`
 - CMUX 派单协议与踩坑：`protocol-cmux.md`
 
 ## 七、踩坑记录（指挥家备忘录）

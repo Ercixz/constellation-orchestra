@@ -21,7 +21,8 @@
 | 文件 | 内容 |
 |---|---|
 | `SKILL.md` | 总纲：二元论 / 重量分级 / 心智模型 / 项目蓝图 / 团队角色 / 任务闭环 / 导航 |
-| `philosophy.md` | 【设计哲学】编排器 vs AI Agent 二元论、可插拔、主管-子 Agent、编排重量分级、系统架构（GitHub 任务平台）、星座乐团 |
+| `philosophy.md` | 【设计哲学】编排器 vs AI Agent 二元论、可插拔、主管-子 Agent、编排重量分级、团队协作分派、星座乐团 |
+| `management.md` | 【管理】系统架构：GitHub 任务平台（四层架构 / 任务闭环 / 组件职责 / 跨项目 / 决策链） |
 | `connectors/orchestrators/orca.md` | Orca 档案（四问 + 命令速查） |
 | `connectors/orchestrators/cmux.md` | CMUX 档案（四问 + 命令速查） |
 | `connectors/orchestrators/paseo.md` | Paseo 档案（四问 + 命令速查） |
