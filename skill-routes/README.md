@@ -15,6 +15,7 @@
 | **handoff** | 全员 | 全员 | 会话间/角色间交接上下文 | `productivity/handoff` |
 | **to-tickets** | 产出 | Manager | 拆工单（blocking 边 + 可自证切片） | `engineering/to-tickets` |
 | **grill-with-docs** | HITL | Manager | 追问 + 顺带留 CONTEXT.md/ADR | `engineering/grill-with-docs` |
+| **wayfinder** | 规划 | Manager | 大任务画决策票地图，一次一票（Plan don't do） | `engineering/wayfinder` |
 | **ask-matt** | 路由 | 全员 | 不确定下一步该用哪个技能 | `engineering/ask-matt` |
 
 > **分类说明**：AFK = agent 可独自干（可并行）；HITL = 须人机对话（agent 不自问自答）；词汇层/路由 = 底层支撑。

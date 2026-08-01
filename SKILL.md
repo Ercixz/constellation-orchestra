@@ -180,6 +180,7 @@ constellation-orchestra/
 │   ├── handoff.md          交接文档/建议技能/脱敏
 │   ├── to-tickets.md       拆工单/blocking 边/可自证切片
 │   ├── grill-with-docs.md  grilling + domain-modeling 薄封装
+│   ├── wayfinder.md        大型任务规划：决策票地图/票型/HITL 上报秘书
 │   └── ask-matt.md         路由导航（何时用哪个技能）
 ├── connectors/
 │   ├── orchestrators/        编排器档案（四问详解）
@@ -203,7 +204,7 @@ constellation-orchestra/
 - 想配/拉 agent → `connectors/agents/*.md`
 - 想派单协作 → `protocol-cmux.md`
 
-> 📂 **团队技能指引**：研究团队各角色配什么技能 → 见 `skill-routes/README.md` 技能总表（research/grilling/grill-me/domain-modeling/handoff/to-tickets/grill-with-docs/ask-matt）；技能详情 → 对应 `skill-routes/<技能>.md` 浓缩文件（完整版在 mattpocock/skills 原文链接）。Agent 按角色需求**自己去 skill-routes/ 自取**，不强制全文加载。
+> 📂 **团队技能指引**：研究团队各角色配什么技能 → 见 `skill-routes/README.md` 技能总表（research/grilling/grill-me/domain-modeling/handoff/to-tickets/grill-with-docs/wayfinder/ask-matt）；技能详情 → 对应 `skill-routes/<技能>.md` 浓缩文件（完整版在 mattpocock/skills 原文链接）。Agent 按角色需求**自己去 skill-routes/ 自取**，不强制全文加载。
 
 **编排器四问**（每个 connectors/orchestrators/*.md 都回答）：
 1. 用什么 CLI/界面连接它
