@@ -37,14 +37,18 @@ Orca 的空间是**三层叠加**（详见 SKILL.md 心智模型）：
 ### 团队角色 → Orca 位置分层（实测排布）
 
 ```
-main tree（git main worktree）  ←  Checker：合并 worker 成果进 main、验收
-项目根目录（folder workspace）  ←  Manager：只管技术规划/拆单，不碰合并
-worktree ×N                     ←  Worker：隔离执行（调研/建构）
+Orca 侧边栏
+└── Project Group: 游戏项目（容器标签）
+    ├── Project: git 仓库（worktree 染指处）→ 里面开各种 worktree
+    │     ├── main tree ← Checker：合并 worker 成果进 main、验收
+    │     └── worktree ×N ← Worker：隔离执行（调研/建构）
+    └── Folder WS: 项目本体 / 文件类文件夹 ← Manager：只管技术规划/拆单，不进任何 worktree
 ```
 
-- Manager 跑**项目根目录**（folder workspace / main worktree 上的 opencode 终端），只做技术规划。
-- Worker 跑 **worktree**（`worktree create --agent` 或 `terminal create --command opencode`），隔离执行。
-- **Checker 在 main tree 上合并**：Worker 提交回 main → Checker `orca worktree show main` 复核 live 状态 → 合并/验收。
+- **Project Group** = 顶层容器标签，对应整个项目文件夹。
+- **git 仓库**只在 worktree 染指处单独开 Project，里面开各种 worktree。
+- **项目本体 / 文件类文件夹** = folder workspace，**Manager 直改**，Manager 不跑任何 worktree。
+- **Checker 在 main tree 上合并**：Worker 提交回 main → Checker 复核 live 状态 → 合并/验收。
 - 实例：`.agents/TEAM-PROTOCOL.md`（Project Deterritorialization 落地）→ 分层约定见其第 4 节。
 
 ### 4. 编排 GUI 关系（多开窗口/切分 pane/布局）

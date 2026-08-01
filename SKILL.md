@@ -82,12 +82,20 @@ MyGame/（磁盘普通目录）
 ### Orca 角色-位置分层（团队排布铁律）
 
 ```
-main tree（git main worktree）  ←  Checker：合并 worker 成果进 main、验收
-项目根目录（folder workspace）  ←  Manager：只管技术规划/拆单，不碰合并
-worktree ×N                     ←  Worker：隔离执行（调研/建构）
+Orca 侧边栏
+└── Project Group: 游戏项目（容器标签）
+    ├── Project: git 仓库（worktree 染指处）→ 里面开各种 worktree
+    │     ├── main tree ← Checker：合并 worker 成果进 main、验收
+    │     └── worktree ×N ← Worker：隔离执行（调研/建构）
+    └── Folder WS: 项目本体 / 文件类文件夹 ← Manager：只管技术规划/拆单，不进任何 worktree
 ```
 
-**合并流程**：Worker 在 worktree 完成 → 提交回 main → **Checker 在 main tree 上执行合并与验收** → Manager 只需规划，不直接合并。
+**分层铁律**：
+- **Project Group**（顶层容器标签）= 对应整个项目文件夹，把 git 仓库和项目本体 folder 组织在一起。
+- **git 仓库**只在"worktree 染指的地方"单独开一个 Project，里面开各种 worktree。
+- **项目本体 / 文件类文件夹** = folder workspace，**交给 Manager 直改**。
+- **Manager 不跑在 worktree 里面**（main 也是 worktree）——Manager 只碰项目本体 folder。
+- **合并流程**：Worker 在 worktree 完成 → 提交回 main → **Checker 在 main tree 上合并验收** → Manager 只规划，不直接合并。
 
 ## 四、任务流转闭环（乐章的起承转合）
 
