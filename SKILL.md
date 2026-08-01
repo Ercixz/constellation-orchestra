@@ -74,9 +74,20 @@ MyGame/（磁盘普通目录）
 
 | 角色 | 职责 | 工具映射 |
 |---|---|---|
-| **Manager（指挥家）** | 建任务单、派发、独立验收、归档 | 主 surface / Paseo agent |
-| **Worker（乐手）** | 读任务单执行、写回执、汇报 | CMUX surface / Orca worktree terminal |
-| **Reviewer（审谱者）** | 独立复核回执与 live 状态，不轻信 | 空闲 surface / 独立 agent |
+| **Manager（指挥家）** | **只做技术规划**：建任务单、派发、汇总结论，不亲自执行/不直接合并 | 项目根目录 folder workspace（Paseo / 根目录 opencode 终端） |
+| **Worker（乐手）** | 读任务单执行、写回执、汇报 | Orca **worktree** terminal（隔离执行） |
+| **Checker（审谱者）** | 在 **main tree** 上把 worker 成果合并进 main、独立复核 live 状态，不轻信 | Orca main worktree / 独立 agent |
+| **Reviewer（复核）** | 独立复核回执与 live 状态，不轻信 | 空闲 surface / 独立 agent |
+
+### Orca 角色-位置分层（团队排布铁律）
+
+```
+main tree（git main worktree）  ←  Checker：合并 worker 成果进 main、验收
+项目根目录（folder workspace）  ←  Manager：只管技术规划/拆单，不碰合并
+worktree ×N                     ←  Worker：隔离执行（调研/建构）
+```
+
+**合并流程**：Worker 在 worktree 完成 → 提交回 main → **Checker 在 main tree 上执行合并与验收** → Manager 只需规划，不直接合并。
 
 ## 四、任务流转闭环（乐章的起承转合）
 

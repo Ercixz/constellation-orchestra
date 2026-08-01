@@ -34,6 +34,19 @@ Orca 的空间是**三层叠加**（详见 SKILL.md 心智模型）：
 - Selector：`--repo` = `id:` / `name:` / `path:`；`--worktree` = `id:` / `name:` / `branch:` / `issue:` / `path:` / `active` / `current`。
 - 发现用 selector，重复操作用 handle（`terminal list --json` 的 handle）。
 
+### 团队角色 → Orca 位置分层（实测排布）
+
+```
+main tree（git main worktree）  ←  Checker：合并 worker 成果进 main、验收
+项目根目录（folder workspace）  ←  Manager：只管技术规划/拆单，不碰合并
+worktree ×N                     ←  Worker：隔离执行（调研/建构）
+```
+
+- Manager 跑**项目根目录**（folder workspace / main worktree 上的 opencode 终端），只做技术规划。
+- Worker 跑 **worktree**（`worktree create --agent` 或 `terminal create --command opencode`），隔离执行。
+- **Checker 在 main tree 上合并**：Worker 提交回 main → Checker `orca worktree show main` 复核 live 状态 → 合并/验收。
+- 实例：`.agents/TEAM-PROTOCOL.md`（Project Deterritorialization 落地）→ 分层约定见其第 4 节。
+
 ### 4. 编排 GUI 关系（多开窗口/切分 pane/布局）
 
 - Orca 本体是 GUI app：侧边栏 = Project/Group 树；主区 = worktree 视图；终端区 = Tab/Pane。
