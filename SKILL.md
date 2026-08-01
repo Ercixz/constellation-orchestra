@@ -127,6 +127,27 @@ git worktree 机制：**LFS 对象在 `.git/lfs/objects/` 共享一份**，但**
 | **Checker（审谱者）** | 在 **main tree** 上把 worker 成果合并进 main、独立复核 live 状态，不轻信 | Orca main worktree / 独立 agent |
 | **Reviewer（复核）** | 独立复核回执与 live 状态，不轻信 | 空闲 surface / 独立 agent |
 
+### 目的/技术分层（问题归属铁律）
+
+**目的问题（为什么做、做成什么样、设计/世界观/体验）与技术问题（怎么做、怎么实现）都由 Manager 经 wayfinder 组织——Manager 是 wayfinder 的主人（含 grilling 票的决定权）。**
+
+```
+Manager = wayfinder 主人
+  ├── 画地图、开决策票（含 grilling 票）——决定问什么、怎么组织
+  ├── grilling 归 Manager（不归秘书）
+  └── 技术问题自己解决，解决不了才上报
+
+秘书 = 人机对话执行接口
+  ├── 帮 Manager 转述 grilling 问题给用户、回传答案
+  ├── 把用户方向性回答编译进 GDD（留档载体）
+  └── 不拥有 grill 的发起权/决定权，只执行对话
+```
+
+**关键动作**：
+- GDD（游戏设计文档）= 目的层**留档载体**，秘书编译（不是 Manager 的职责，但问题是 Manager 经 wayfinder 组织出来的）。
+- Manager 的 wayfinder 地图里的 grilling 票 → 秘书转述用户 → 答案回传 Manager → 关票更新地图。
+- 技术疑难（PCG 实现、敌人 AI 数值、引擎问题）Manager 自行解决，解决不了才经秘书问用户。
+
 ### Orca 角色-位置分层（团队排布铁律）
 
 ```
