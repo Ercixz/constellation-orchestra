@@ -52,6 +52,40 @@ $CMUX resize-pane --pane <UUID> -L --amount 5 --workspace $W  # 调 pane 宽度
 - paseo 路径：`~/.local/bin/paseo`（或 `/Applications/Paseo.app/Contents/Resources/bin/paseo`）
 - 关键：这写在每个任务单的"完成后必须执行"段
 
+## 轻/中型任务协议速查（轻/重分离，不套 LangGraph）
+
+轻/中型任务直接在编排器建 agent + Paseo 主管直连，**中间不套 LangGraph/Pydantic AI 等重框架**。三条协议互操作即可打通。完整哲学见 `philosophy.md` 第六节。
+
+### 1. 派单方向（Paseo 主管 → 编排器 → 子 Agent）
+
+| 场景 | 命令/工具 |
+|---|---|
+| Paseo 内直接建子 agent | `create_agent {title, provider, initialPrompt}` + `send_agent_prompt {agentId, prompt}` |
+| Paseo CLI 快捷跑 | `paseo run --provider <p> --mode full-access --workspace <id> "<prompt>"` |
+| CMUX surface 派单 | `cmux send --surface <UUID> --workspace <W> "新任务 NNN：任务单 <路径>。立即执行，完成写回执 + paseo send 汇报"` + `send-key ... enter` |
+| CMUX 读子 agent 状态 | `cmux read-screen --surface <UUID> --workspace <W>` |
+| Orca worktree 建 agent | `orca worktree create --name <n> --repo R --agent <id> --prompt "<任务>"` |
+| Orca 终端起 agent | `orca terminal create --worktree active --command "claude|codex|opencode"` + `terminal send` |
+
+### 2. 回传方向（子 Agent → Paseo 主管）
+
+- 子 Agent 干完/遇阻时执行：`paseo send <主管id> --no-wait "NNN 完成：一句话摘要（回执+status）"`
+- 主管在 Paseo 会话自动收到；勿轮询，通知自行到达（Paseo 等待哲学）。
+
+### 3. 任务理解（双方共读 tickets/receipts）
+
+- **tickets/NNN-slug.md**：任务单，必含 Target lock / 背景 / 步骤 / 回执 schema / paseo send 汇报要求。
+- **receipts/NNN.json**：回执，按 schema 填 status/evidence/mutations/blocker。
+- 主管建单时写清 schema，子 Agent 照 schema 填——双方靠**同一份文件约定**互相理解任务，不依赖框架。
+
+### 判定走哪条路径
+
+| 任务 | 路径 |
+|---|---|
+| 单件、快速问答、小改 | 轻型：直接一个 agent 干（CMUX 单 surface / 直接对话） |
+| 多任务并行、要派单/验收 | 中型：tickets/receipts + CMUX 多 surface / Paseo send |
+| 状态机、多阶段流水线 | 重型：LangGraph / Pydantic AI（🔧 研发中） |
+
 ## 踩坑记录（必读）
 
 1. **渲染错乱根因**：opencode TUI 需 ≥60 列；窄 pane（33列）会碎屏。6 surface 必须 3列×2行平铺（各 76 列），勿横排 5+ 个

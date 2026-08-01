@@ -1,6 +1,6 @@
 ---
 name: constellation-orchestra
-description: 编排哲学与工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。核心二元论：编排器（Orca/CMUX/Paseo）vs AI Agent（Claude/Codex/OpenCode），一切皆可插拔环节；编排重量分级（轻/中/重）。Use when you need to understand or configure the orchestration philosophy, weigh a task (light/medium/heavy), connect to an orchestrator or an AI agent, organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or dispatch/verify multi-agent work. 含 connectors/orchestrators/（编排器四问详解）+ connectors/agents/（Agent 供应商/皮肤/拉起）+ protocol-cmux.md（派单协议）。
+description: 编排哲学与工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。核心二元论：编排器（Orca/CMUX/Paseo）vs AI Agent（Claude/Codex/OpenCode），一切皆可插拔环节；编排重量分级（轻/中/重）+ 团队协作分派（轻/中型直连协议，不套 LangGraph）。Use when you need to understand or configure the orchestration philosophy, weigh a task (light/medium/heavy), dispatch a light/medium task via direct protocol (Paseo supervisor ↔ orchestrator ↔ sub-agent), connect to an orchestrator or an AI agent, organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or dispatch/verify multi-agent work. 含 connectors/orchestrators/（编排器四问详解）+ connectors/agents/（Agent 供应商/皮肤/拉起）+ protocol-cmux.md（派单协议与轻/中型任务协议速查）。
 ---
 
 # 星座交响乐团 — 编排哲学与工作区组织方法论
@@ -138,6 +138,7 @@ constellation-orchestra/
 
 - 编排器接入：`connectors/orchestrators/`；Agent 接入：`connectors/agents/`
 - **任务重量分级（轻/中/重）**：见 `philosophy.md` 第五节——能轻度绝不重度
+- **团队协作分派（轻重分离）**：轻/中型走直连协议（Paseo 主管 ↔ 编排器 ↔ 子 Agent，不套 LangGraph），见 `philosophy.md` 第六节；协议速查见 `protocol-cmux.md`
 - CMUX 派单协议与踩坑：`protocol-cmux.md`
 
 ## 七、踩坑记录（指挥家备忘录）
