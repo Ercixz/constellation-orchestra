@@ -1,6 +1,6 @@
 ---
 name: constellation-orchestra
-description: 工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。Use when you need to organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or explain how this workspace organizes multi-agent collaboration. 这是方法论层，工具细节见 orchestration-manual 和 cmux-orchestration。
+description: 工作区组织方法论总纲（星座=组织架构 / 乐团=协同流程）。Use when you need to organize a project structure (code/assets/docs layering), set up an agent team (Manager/Worker/Reviewer), design task workflow, decide between git worktree vs folder workspace, or explain how this workspace organizes multi-agent collaboration. 含三工具手册与派单协议（tool-*.md / protocol-cmux.md）。
 ---
 
 # 星座交响乐团 — 工作区组织方法论
