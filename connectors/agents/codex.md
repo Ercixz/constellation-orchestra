@@ -21,6 +21,16 @@
 - Codex CLI 是终端界面；`codex` 在窄面板里同样需足够列宽。
 - 偏好/认证文件在 `~/.codex/`；可配 `~/.codex/config.toml`。
 
+## ⚠️ 踩坑警示：不要设全局第三方 provider
+
+- **`~/.codex/config.toml` 被 CLI 与 ChatGPT.app（desktop）共享**，二者没有独立配置。
+- 若在 config.toml 里设全局 `model_provider = "<第三方>"`（如 DeepSeek）：
+  - desktop 也会被带成第三方 provider → GUI 进程拿不到该 provider 的 `env_key` 环境变量 → 报 `Missing environment variable: ...`；
+  - 官方模型也被挤掉/带偏（`model_catalog_json` 是"替换"语义，不是追加）。
+- **正确做法**：全局保持官方默认；要用第三方时在 CLI 显式指定：
+  `DEEPSEEK_API_KEY=xxx codex exec -c 'model_provider="deepseek"' -m deepseek-v4-flash "<任务>"`
+- **本场约定（2026-08-02 起）**：codex / claude code 保持纯官方；deepseek 走 OpenCode（见 `opencode.md`）。desktop 与 CLI 之间靠环境变量差别的坑，不再碰。
+
 ## 如何被编排器拉起
 
 | 编排器 | 拉起方式 |
