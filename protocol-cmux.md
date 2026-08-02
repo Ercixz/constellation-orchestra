@@ -40,7 +40,8 @@ $CMUX resize-pane --pane <UUID> -L --amount 5 --workspace $W  # 调 pane 宽度
    - Target lock（目标主机/允许/禁止）
    - 背景（Manager 已验证的 live 事实）
    - 执行步骤 + 回执 JSON schema
-   - 完成后必须 `paseo send <manager-id> --no-wait "..."` 汇报
+   - **验收清单三步**（完成主任务 / 写回执 JSON / paseo send 汇报——见下"Worker 回传"节）
+   - 完成后必须 `paseo send <manager-id> --no-wait "..."` 汇报（send 引用回执路径）
 2. **派单**：`cmux send` 一句话（"新任务 NNN：... 任务单：<路径>。立即执行，完成写回执 + paseo send 汇报"）+ enter
 3. **等回执**：worker 完成会 `paseo send` 汇报（勿频繁轮询）
 4. **独立验收**：收到回执后**自己验证 live 状态**（curl/ssh/docker），不轻信回执内容
@@ -51,6 +52,33 @@ $CMUX resize-pane --pane <UUID> -L --amount 5 --workspace $W  # 调 pane 宽度
 - worker 收工/遇到情况时自己执行：`paseo send f2e6aa67-7f67-4c3b-a97c-95e2ccb0b90a --no-wait "NNN 完成：一句话摘要（回执+status）"`
 - paseo 路径：`~/.local/bin/paseo`（或 `/Applications/Paseo.app/Contents/Resources/bin/paseo`）
 - 关键：这写在每个任务单的"完成后必须执行"段
+
+### 验收清单三步（任务单必带，worker 逐项勾）
+
+> 把 send 从"尾巴"变成任务的第 N 步——防止主任务占满注意力后忘汇报：
+
+```
+验收清单（worker 必须逐项勾）：
+□ 完成主任务
+□ 写回执 JSON（receipts/NNN.json）
+□ paseo send 汇报（内容含回执路径 + status）
+```
+
+### 完成即回执即汇报（顺序铁律）
+
+- **先写回执文件 → 再 paseo send**；send 内容**必须引用回执路径**。
+- 防止"口头说完成但没落盘"的假完成——Manager 验收以**回执文件**为准，不轻信口头。
+
+### send 消息格式（标准化）
+
+```
+paseo send <manager-id> --no-wait "NNN 任务名 完成/进展：一句话摘要（回执路径+status）"
+```
+
+### 降级（worker 无法 send 时）
+
+- 若网络/权限导致 send 失败：**把汇报写进回执文件**（receipts/NNN.json 的 evidence 或备注），并**明确告知 Manager 需要轮询**（如任务单回复"send 失败，请轮询回执"）。
+- 降级不影响验收：Manager 仍按回执文件独立验证。
 
 ## 轻/中型任务协议速查（轻/重分离，不套 LangGraph）
 
