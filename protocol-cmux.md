@@ -47,6 +47,27 @@ $CMUX resize-pane --pane <UUID> -L --amount 5 --workspace $W  # 调 pane 宽度
 4. **独立验收**：收到回执后**自己验证 live 状态**（curl/ssh/docker），不轻信回执内容
 5. **归档**：任务闭环后更新 `AI-Persistence/`（Memory-Bucket + Agent-Context + prompt-for-next-agent + Task-List）
 
+## Manager 超时兜底机制（防"完成没 send"）
+
+send 是 worker 自觉（见上"Worker 回传"），但 **Manager 不能无限等 send**。worker 可能完成了活却忘汇报——Manager 需主动兜底发现并推进，而不是干等。
+
+### 流程（Manager 视角）
+
+1. **派单记录**：Manager 派单时记下 `时间戳 + 任务单号`（内存或 ledger，如 `tickets/派单台账`）。
+2. **超时检测**：超过阈值（**轻任务 10 分钟 / 重任务 30 分钟**，可按需调整）仍**未收到**该任务的 `paseo send`：
+   - **先查回执文件**：`receipts/NNN.json` 是否已出现——worker 很可能写了回执但忘了 send。
+     - 回执在 → **直接按回执验收即可，不追究 send**（兜底成功）。
+   - 回执不在 → `cmux read-screen` 检查该 surface 状态：
+     - **还在 Build（工作中）** → 继续等，延长阈值。
+     - **QUEUED 卡死** → 按踩坑第 2 条处理（Esc×2 打断；仍不行 `/exit` 重开，`-s` 恢复会话）。
+     - **空闲但没回执** → 发一条提醒：`cmux send "任务 NNN 状态？写回执 + paseo send 汇报"` + enter。
+3. **重试**：提醒一次后仍无响应 → 记录为**沟通失败**，Manager 亲自 `read-screen` 检查 surface 内容判断进度，必要时**重新派单**。
+
+### 防假完成（验收纪律）
+
+- 验收**优先看回执文件**（机器可读），**不以 send 消息为准**——send 是"通知"，回执是"证据"。
+- 即使收到 send 但回执缺失 → 视为未完成，要求补回执后再验收。
+
 ## Worker 回传（零 hook 零脚本，纯约定）
 
 - worker 收工/遇到情况时自己执行：`paseo send f2e6aa67-7f67-4c3b-a97c-95e2ccb0b90a --no-wait "NNN 完成：一句话摘要（回执+status）"`
